@@ -1,0 +1,48 @@
+version: '3'
+services:
+  movies-admin:
+    build: ../movies_admin/app
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    env_file:
+      - ../movies_admin/app/.env
+#    networks:
+#      - movies-admin-net
+
+#  nginx:
+#    image: nginx:latest
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#      - ./configs:/etc/nginx/conf.d:ro
+#    depends_on:
+#      - movies-admin
+#    ports:
+#      - "80:80"
+#
+#  theatre-db:
+##    Тут необходимо описать недостающие элементы
+#    volumes:
+#      - ./database_dump.sql:/docker-entrypoint-initdb.d/init.sql
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: movies_database
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - ./database_dump.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+#    healthcheck:
+#      test: [ "CMD-SHELL", "pg_isready -U myuser -d blog_db" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 10
+#    networks:
+#      - movies-admin-net
+
+
+
