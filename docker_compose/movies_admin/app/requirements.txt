@@ -1,0 +1,13 @@
+asgiref==3.9.1
+Django==4.2.11
+flake8==6.1.0
+mccabe==0.7.0
+psycopg==3.1.18
+psycopg-binary==3.1.18
+pycodestyle==2.11.1
+pyflakes==3.1.0
+python-dotenv==1.1.1
+split-settings==1.0.0
+sqlparse==0.5.3
+typing_extensions==4.15.0
+uwsgi
