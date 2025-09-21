@@ -10,4 +10,4 @@ python-dotenv==1.1.1
 split-settings==1.0.0
 sqlparse==0.5.3
 typing_extensions==4.15.0
-uwsgi
+uWSGI==2.0.30
