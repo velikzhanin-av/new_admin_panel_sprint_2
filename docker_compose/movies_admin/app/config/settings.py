@@ -21,6 +21,7 @@ DEBUG = os.environ.get("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
 # ALLOWED_HOSTS =  ["127.0.0.1", ""]  # for uwsgi
+print('ALLOWED_HOSTS', ALLOWED_HOSTS)
 
 ROOT_URLCONF = "config.urls"
 
@@ -50,7 +51,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
