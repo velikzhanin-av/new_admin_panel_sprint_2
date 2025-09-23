@@ -38,9 +38,9 @@ services:
     env_file:
       - ../movies_admin/app/.env
     environment:
-      POSTGRES_DB: movies_database
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./database_dump.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
