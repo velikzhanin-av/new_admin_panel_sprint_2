@@ -1,8 +1,18 @@
 from dotenv import load_dotenv
 import os
+import environ
 
 from split_settings.tools import include
 from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+env_file = os.environ.get('ENV_FILE', '.env.local')
+environ.Env.read_env(os.path.join(BASE_DIR, env_file))
 
 load_dotenv()
 
@@ -12,8 +22,6 @@ include(
     "components/installed_apps.py",
     "components/auth_password_validators.py",
 )
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
