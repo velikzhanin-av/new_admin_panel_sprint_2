@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import override
 
 from django.contrib.postgres.aggregates import ArrayAgg
@@ -7,12 +8,32 @@ from django.views.generic.list import BaseListView
 
 from movies.models import FilmWork
 
+class Roles(Enum):
+    ACTOR = 'actor'
+    DIRECTOR = 'director'
+    WRITER = 'writer'
+
 class MoviesApiMixin:
     model = FilmWork
     http_method_names = ['get']
     paginate_by = 50
 
     def get_queryset(self):
+        base_query = (self.model.objects.all()
+                .prefetch_related('genres', 'persons')
+                .values('id',
+                        'title',
+                        'description',
+                        'creation_date',
+                        'rating')
+                .annotate(
+                        genres=ArrayAgg('genres__name', distinct=True),
+                        persons=ArrayAgg('persons__full_name', distinct=True)))
+
+
+        # for role in Roles:
+
+
         return (self.model.objects.all()
                 .prefetch_related('genres', 'persons')
                 .values('id',
@@ -49,4 +70,4 @@ class MoviesDetailApi(MoviesApiMixin, BaseDetailView):
 
     @override
     def get_context_data(self, *, object_list=None, **kwargs):
-
+        return self.get_object(queryset=self.get_queryset())
