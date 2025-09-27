@@ -23,7 +23,6 @@ RUN  mkdir -p /var/www/static/ \
 COPY . .
 
 RUN  mkdir -p static staticfiles media \
-     && pwd \
      && python manage.py collectstatic --no-input
 
 EXPOSE 8000

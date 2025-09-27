@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import override
 
 from django.contrib.postgres.aggregates import ArrayAgg
 from django.http import JsonResponse
@@ -51,7 +50,6 @@ class MoviesApiMixin:
 
 class MoviesListApi(MoviesApiMixin, BaseListView):
 
-    @override
     def get_context_data(self, *, object_list=None, **kwargs):
         results_qs = self.get_queryset()
 
@@ -68,6 +66,5 @@ class MoviesListApi(MoviesApiMixin, BaseListView):
 
 class MoviesDetailApi(MoviesApiMixin, BaseDetailView):
 
-    @override
     def get_context_data(self, *, object_list=None, **kwargs):
         return self.get_object(queryset=self.get_queryset())
