@@ -1,7 +1,9 @@
 from enum import Enum
 
 from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models import Q
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import BaseListView
 
@@ -18,20 +20,16 @@ class MoviesApiMixin:
     paginate_by = 50
 
     def get_queryset(self):
-        base_query = (self.model.objects.all()
-                .prefetch_related('genres', 'persons')
-                .values('id',
-                        'title',
-                        'description',
-                        'creation_date',
-                        'rating')
-                .annotate(
-                        genres=ArrayAgg('genres__name', distinct=True),
-                        persons=ArrayAgg('persons__full_name', distinct=True)))
+        annotations = {}
 
+        for role in Roles:
+            annotations[f"{role.value}s"] = ArrayAgg(
+                'persons__full_name',
+                filter=Q(personfilmwork__role=role.value),
+                distinct=True
+            )
 
-        # for role in Roles:
-
+        annotations['genres'] = ArrayAgg('genres__name', distinct=True)
 
         return (self.model.objects.all()
                 .prefetch_related('genres', 'persons')
@@ -39,11 +37,9 @@ class MoviesApiMixin:
                         'title',
                         'description',
                         'creation_date',
-                        'rating')
-                .annotate(
-                        genres=ArrayAgg('genres__name', distinct=True),
-                        persons=ArrayAgg('persons__full_name', distinct=True),
-        ))
+                        'rating',
+                        'type')
+                .annotate(**annotations))
 
     def render_to_response(self, context: dict, **response_kwargs):
         return JsonResponse(context)
@@ -67,4 +63,7 @@ class MoviesListApi(MoviesApiMixin, BaseListView):
 class MoviesDetailApi(MoviesApiMixin, BaseDetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        return self.get_object(queryset=self.get_queryset())
+        id = self.kwargs.get('pk')
+        queryset = self.get_queryset()
+
+        return get_object_or_404(queryset, id=id)

@@ -21,6 +21,7 @@ include(
     "components/middleware.py",
     "components/installed_apps.py",
     "components/auth_password_validators.py",
+    "components/logging.py",
 )
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -28,7 +29,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
-# ALLOWED_HOSTS =  ["127.0.0.1", ""]  # for uwsgi
 
 ROOT_URLCONF = "config.urls"
 

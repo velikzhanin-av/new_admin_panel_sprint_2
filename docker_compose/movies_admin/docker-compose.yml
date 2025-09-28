@@ -10,7 +10,7 @@ services:
       - ../movies_admin/app/.env
     depends_on:
       postgres:
-        condition: service_healthy  # Вот это важно!
+        condition: service_healthy
     volumes:
       - static_volume:/var/www/static
       - media_volume:/var/www/media
@@ -32,6 +32,7 @@ services:
     env_file:
       - ../movies_admin/app/.env
     environment:
+#     при указании переменных не заработало (${DB_USER} ${DB_NAME} ${DB_PASSWORD})
       POSTGRES_DB: movies_database
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
