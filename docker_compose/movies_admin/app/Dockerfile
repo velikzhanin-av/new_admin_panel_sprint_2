@@ -13,6 +13,7 @@ COPY run_uwsgi.sh run_uwsgi.sh
 COPY requirements.txt requirements.txt
 COPY uwsgi/uwsgi.ini uwsgi.ini
 
+
 RUN  mkdir -p /var/www/static/ \
      && mkdir -p /var/www/media/ \
      && mkdir -p /opt/app/static/ \
@@ -22,8 +23,9 @@ RUN  mkdir -p /var/www/static/ \
 
 COPY . .
 
-RUN python manage.py collectstatic --no-input
+RUN python manage.py collectstatic --no-input \
+    && chmod +x run_uwsgi.sh
 
 EXPOSE 8000
 
-ENTRYPOINT ["uwsgi", "--strict", "--ini", "uwsgi.ini"]
+ENTRYPOINT ["./run_uwsgi.sh"]

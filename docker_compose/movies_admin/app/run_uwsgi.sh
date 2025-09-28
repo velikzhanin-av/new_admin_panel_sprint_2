@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+#set -e
+cd /opt/app
+python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
+#
+#chown www-data:www-data /var/log
 
-chown www-data:www-data /var/log
-
-uwsgi --strict --ini /etc/app/uwsgi.ini
+uwsgi --strict --ini uwsgi.ini
