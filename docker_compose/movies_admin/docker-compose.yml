@@ -2,10 +2,6 @@ version: '3'
 services:
   service:
     build: ../movies_admin/app
-    ports:
-      - "8000:8000"
-    expose:
-      - "8000"
     env_file:
       - ../movies_admin/app/.env
     depends_on:
@@ -32,14 +28,11 @@ services:
     env_file:
       - ../movies_admin/app/.env
     environment:
-#     при указании переменных не заработало (${DB_USER} ${DB_NAME} ${DB_PASSWORD})
       POSTGRES_DB: movies_database
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
     volumes:
       - ./database_dump.sql:/docker-entrypoint-initdb.d/init.sql
-    ports:
-      - "5432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U myuser -d movies_database" ]
       interval: 5s
