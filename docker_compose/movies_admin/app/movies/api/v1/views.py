@@ -23,7 +23,7 @@ class MoviesApiMixin:
         annotations = {}
 
         for role in Roles:
-            annotations[f"{role.value}s"] = ArrayAgg(
+            annotations[f'{role.value}s'] = ArrayAgg(
                 'persons__full_name',
                 filter=Q(personfilmwork__role=role.value),
                 distinct=True
